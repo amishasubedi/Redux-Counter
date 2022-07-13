@@ -1,12 +1,11 @@
-import { createStore } from "redux";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialState = { counter: 0, showCounter: true };
 
 /**
  * createSlice() accepts initial state, an object of reducer functions, and a slice name
  */
-createSlice({
+const counterSlice = createSlice({
   name: "counter", // a name, used in action types
   initialState, // initial state for reducer
 
@@ -31,39 +30,43 @@ createSlice({
   },
 });
 
-const counterReducer = (state = initialState, action) => {
-  if (action.type === "increment") {
-    return {
-      // NEVER MUTATE THE STATE like this (state.counter++) here because it will change the existing state
-      counter: state.counter + 1,
-      showCounter: state.showCounter,
-    };
-  }
+// const counterReducer = (state = initialState, action) => {
+//   if (action.type === "increment") {
+//     return {
+//       // NEVER MUTATE THE STATE like this (state.counter++) here because it will change the existing state
+//       counter: state.counter + 1,
+//       showCounter: state.showCounter,
+//     };
+//   }
 
-  if (action.type === "decrement") {
-    return {
-      counter: state.counter - 1,
-      showCounter: state.showCounter,
-    };
-  }
+//   if (action.type === "decrement") {
+//     return {
+//       counter: state.counter - 1,
+//       showCounter: state.showCounter,
+//     };
+//   }
 
-  if (action.type === "increase") {
-    return {
-      counter: state.counter + action.amount,
-      showCounter: state.showCounter,
-    };
-  }
+//   if (action.type === "increase") {
+//     return {
+//       counter: state.counter + action.amount,
+//       showCounter: state.showCounter,
+//     };
+//   }
 
-  if (action.type === "toggle") {
-    return {
-      counter: state.counter,
-      showCounter: !state.showCounter,
-    };
-  }
+//   if (action.type === "toggle") {
+//     return {
+//       counter: state.counter,
+//       showCounter: !state.showCounter,
+//     };
+//   }
 
-  return state;
-};
+//   return state;
+// };
 
-const store = createStore(counterReducer);
+//////////////////////
+// configure store merge all reducers into one big reducer
+const store = configureStore({
+  reducer: counterSlice.reducer,
+});
 
 export default store;
