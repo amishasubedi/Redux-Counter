@@ -4,6 +4,7 @@ const initialState = { counter: 0, showCounter: true };
 
 /**
  * createSlice() accepts initial state, an object of reducer functions, and a slice name
+ * it automatically creates unique action identifiers for different reducers
  */
 const counterSlice = createSlice({
   name: "counter", // a name, used in action types
@@ -21,7 +22,7 @@ const counterSlice = createSlice({
 
     // multiple state
     increase(state, action) {
-      state.counter = state.counter + action.amount;
+      state.counter = state.counter + action.payload; // payload - extra data you might dispatch
     },
 
     toggleCounter(state) {
@@ -29,6 +30,8 @@ const counterSlice = createSlice({
     },
   },
 });
+
+/////////////////////////////////////////////////////  WITHOUT USING REDUX TOOLKITS  //////////////////////////////////////////////////////////////////
 
 // const counterReducer = (state = initialState, action) => {
 //   if (action.type === "increment") {
@@ -63,10 +66,13 @@ const counterSlice = createSlice({
 //   return state;
 // };
 
-//////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // configure store merge all reducers into one big reducer
 const store = configureStore({
   reducer: counterSlice.reducer,
 });
+
+export const counterActions = counterSlice.actions;
 
 export default store;
