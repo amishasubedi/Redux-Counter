@@ -1,14 +1,14 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const initialState = { counter: 0, showCounter: true };
+const initialCounterState = { counter: 0, showCounter: true };
 
-/**
+/** FOR MANAGING COUNTER
  * createSlice() accepts initial state, an object of reducer functions, and a slice name
  * it automatically creates unique action identifiers for different reducers
  */
 const counterSlice = createSlice({
   name: "counter", // a name, used in action types
-  initialState, // initial state for reducer
+  initialState: initialCounterState, // initial state for reducer
 
   // an object of key reducers
   reducers: {
@@ -68,11 +68,33 @@ const counterSlice = createSlice({
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// FOR USER AUTHENTICATION
+const initialAuthState = {
+  isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
+// When you work with multiple slices, you only have one redux store, so you call configure store once
 // configure store merge all reducers into one big reducer
 const store = configureStore({
-  reducer: counterSlice.reducer,
+  // reducer: counterSlice.reducer, // it accepts not only reducer function but object that acts as a map of reducers
+  reducer: { counter: counterSlice.reducer, auth: authSlice.reducer },
 });
 
 export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
 
 export default store;
